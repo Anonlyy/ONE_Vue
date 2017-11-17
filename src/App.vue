@@ -19,6 +19,7 @@
   * {
     font-weight: 300;
     box-sizing: border-box;
+    font-size: 14px;
 
   }
 
@@ -28,7 +29,6 @@
     padding: 0;
     margin: 0 auto;
     max-width: 768px;
-    font-size: 14px;
     font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif !important;
   }
 
