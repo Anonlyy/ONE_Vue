@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app-container">
-    <Spin size="small" v-if="spinShow"></Spin>
+    <Spin size="large" fix v-if="spinShow"></Spin>
     <div class="app-banner" :style="{height:bannerHeight+'px'}" >
       <img class="banner" :src="indexImageText.picUrl" alt="">
       <div class="banner-inner">
@@ -52,11 +52,11 @@
     created() {
       this.api.getIdList().then(
         res => {
-          this.spinShow = false;
           return res.data.data[0];
         }
       ).then((id)=>{
         this.id = id;
+        this.spinShow = false;
         this.api.getImageTextDetail(id).then(
           result=>{
             let data = result.data.data;
@@ -107,7 +107,7 @@
 
 </script>
 
-<style lang="scss" rel="stylesheet/scss">
+<style lang="scss" rel="stylesheet/scss" scoped>
   .app-container{
     width: 100%;
     overflow-x: hidden;
