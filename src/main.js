@@ -10,6 +10,14 @@ Vue.config.productionTip = false
 Vue.use(iView);
 Vue.prototype.api = api;
 /* eslint-disable no-new */
+router.beforeEach((to, from, next) => {
+  iView.LoadingBar.start();
+  next();
+});
+
+router.afterEach(route => {
+  iView.LoadingBar.finish();
+});
 new Vue({
   el: '#app',
   router,

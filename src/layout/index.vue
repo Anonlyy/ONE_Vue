@@ -1,49 +1,28 @@
 <template>
   <div id="app" class="app-container">
+    <Spin size="small" v-if="spinShow"></Spin>
     <div class="app-banner" :style="{height:bannerHeight+'px'}" >
-      <img class="banner" src="http://image.wufazhuce.com/Fj09FuBxJrMw0UD3fPSIfKej-Rr9" alt="">
+      <img class="banner" :src="indexImageText.picUrl" alt="">
       <div class="banner-inner">
-        <h3 class="inner-day">17</h3>
-        <p class="inner-date">VOL.1868 | Nov. 2017 </p>
-        <p class="inner-title">我上美术院的时候，因为舍不得用颜料，所以就用一点点，你知道后来怎么样了吗？中途它凝固了，都没用到一半就扔了。颜料和心都一样，不要省着，那样会凝固掉。 </p>
+        <h3 class="inner-day">{{indexImageText.date | dayPipe}}</h3>
+        <p class="inner-date">{{indexImageText.volume}} | {{ indexImageText.date | datePipe }} </p>
+        <p class="inner-title" v-text="indexImageText.title"></p>
         <span class="icon">
-        <i class="czs-angle-down-l"></i>
+       <Icon type="chevron-down" size="25"></Icon>
       </span>
       </div>
     </div>
     <div class="app-body">
       <ul class="content-list">
-        <li class="content-item">
+        <li class="content-item" v-for="item in contentList">
           <div class="item-heading">
-            <a > 「阅 读」 </a>
+            <a href="#" v-text="'「 '+item.category+' 」'">  </a>
           </div>
           <div class="item-body">
-            <h3 class="title" >天空之城在哭泣</h3>
-            <p class="artist">作者／周云蓬</p>
-            <div class="text-content">这些民谣歌手火起来的原因究竟是什么？我才不相信他们在媒体采访上说的鬼话呢。</div>
+            <h3 class="title"  v-text="item.title"></h3>
+            <p class="artist" v-text="'作者／'+item.authorName"></p>
+            <div class="text-content" v-text="item.content"></div>
             <a href="#" class="more-link">阅读全文 ></a>
-          </div>
-        </li>
-        <li class="content-item">
-          <div class="item-heading">
-            <a href="#"> 「阅 读」 </a>
-          </div>
-          <div class="item-body">
-            <h3 class="title">天空之城在哭泣</h3>
-            <p class="artist">作者／周云蓬</p>
-            <div class="text-content">这些民谣歌手火起来的原因究竟是什么？我才不相信他们在媒体采访上说的鬼话呢。</div>
-            <a  class="more-link">阅读全文 ></a>
-          </div>
-        </li>
-        <li class="content-item">
-          <div class="item-heading">
-            <a href="#"> 「阅 读」 </a>
-          </div>
-          <div class="item-body">
-            <h3 class="title">天空之城在哭泣</h3>
-            <p class="artist">作者／周云蓬</p>
-            <div class="text-content">这些民谣歌手火起来的原因究竟是什么？我才不相信他们在媒体采访上说的鬼话呢。</div>
-            <a  class="more-link">阅读全文 ></a>
           </div>
         </li>
       </ul>
@@ -54,27 +33,78 @@
 </template>
 
 <script>
+  import {IndexImageText , IndexCategory} from '../api/class';
   export default {
     name: 'index',
     data() {
       return {
-        bannerHeight:0
+        bannerHeight:0,
+        idList:[],
+        currentId:-1,
+        spinShow:true,
+        contentList:[],
+        indexImageText:new IndexImageText('null','null','null','null','null','null'),
+        reading:new IndexCategory('null','null','null','null','null','null'),
+        music:new IndexCategory('null','null','null','null','null','null'),
+        movie:new IndexCategory('null','null','null','null','null','null'),
       }
     },
     created() {
       this.api.getIdList().then(
         res => {
           this.spinShow = false;
-          this.results = res.data.data;
+          return res.data.data[0];
         }
-      )
+      ).then((id)=>{
+        this.id = id;
+        this.api.getImageTextDetail(id).then(
+          result=>{
+            let data = result.data.data;
+            console.log(data.content_list);
+            for(let item of data.content_list){
+              switch (item.category){
+                case "0":
+                  this.indexImageText = new IndexImageText(item.id,item.content_id,data.date,item.img_url,item.volume,item.forward,item.pic_info,item.words_info);
+                  break;
+                case "1":
+                  this.reading = new IndexCategory(item.id,item.content_id,'阅读',item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
+                  this.contentList.push(this.reading);
+                  break;
+                case "4":
+                  this.music = new IndexCategory(item.id,item.content_id,'音乐',item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
+                  this.contentList.push(this.music);
+                  break;
+                case "5":
+                  this.movie = new IndexCategory(item.id,item.content_id,'影视',item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
+                  this.contentList.push(this.movie);
+                  break;
+              }
+            }
+            console.log(this.contentList);
+          }
+        );
+
+      })
     },
     mounted(){
       this.bannerHeight = window.screen.height;
     },
+    filters:{
+      datePipe(value){
+        let mon = ['Jan.','Feb.','Mar.','Apr.','May.','Jun.','Jul.','Aug.','Sept.','Oct.','Nov.','Dec.']
+        return value.slice(0,4)+' '+mon[parseInt(value.slice(5,7))-1];
+      },
+      dayPipe(value){
+        return value.toString().slice(8,10);
+      }
+    },
     methods: {
+
     }
   }
+
+
+
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
@@ -105,7 +135,7 @@
         transform: translateX(-15%);
       }
       .banner-inner{
-        z-index: 1001;
+        z-index: 100;
         color: white;
         position: absolute;
         bottom: 0;
@@ -199,3 +229,6 @@
   }
 
 </style>
+
+
+
