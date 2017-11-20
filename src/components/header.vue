@@ -1,10 +1,10 @@
 <template>
   <div class="global-header">
-    <div class="header-left" >
-    <span class="button-menu clearfix">
+    <div class="header-left">
+    <span class="button-menu clearfix" @click="showMenu">
       <Icon type="navicon" size="25"></Icon>
     </span>
-    <header-side></header-side>
+    <header-side :menu-show="isShow" @menuHide="handleMenuHide"></header-side>
     </div>
     <div class="header-center">一个</div>
     <div class="header-right">
@@ -14,14 +14,24 @@
 </template>
 
 <script>
-  import headerSide from './menu'
+  import Menu from './menu';
     export default {
         name: 'header',
         components:{
-          "header-side":headerSide
+          "header-side":Menu
         },
         data() {
-            return {}
+            return {
+              isShow:false
+            }
+        },
+        methods:{
+          showMenu(){
+            this.isShow = true;
+          },
+          handleMenuHide(value){
+            this.isShow = value;
+          }
         }
     }
 </script>

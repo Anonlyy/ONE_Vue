@@ -1,17 +1,19 @@
 <template>
-  <div class="header-sidenav">
+  <div class="header-sidenav" :class="{'nav-show':menuShow}">
     <ul class="list">
       <li class="list-item" >
-        <span class="list-text"><i class="czs-home-l"></i> 主页</span>
+        <span class="list-text" ><Icon type="ios-home" size="20"></Icon> 主页</span>
       </li>
-      <li class="list-item">
-        <span class="list-text"><i class="{{item.icon}}"></i> {{item.name}}</span>
+      <li class="list-item" v-for="item in menuList">
+        <span class="list-text">
+          <Icon :type="item.icon" size="20"></Icon>
+          {{item.name}}</span>
       </li>
       <li class="list-item">
         <span class="list-text">关于我</span>
       </li>
     </ul>
-    <div class="button-overlay" (click)="toList()"></div>
+    <div class="button-overlay" @click="toList"></div>
   </div>
 </template>
 
@@ -22,26 +24,33 @@
       return {
         menuList: [
           {
-            icon:'czs-newspaper-l',
+            icon:'images',
             name:'图文',
             link:"0",
           },
           {
-            icon:'czs-book-l',
+            icon:'android-bookmark',
             name:'阅读',
             link:"1",
           },
           {
-            icon:'czs-music-note-l',
+            icon:'ios-musical-note',
             name:'音乐',
             link:"4",
           },
           {
-            icon:'czs-network-l',
+            icon:'ios-film',
             name:'影视',
             link:"5",
           }
         ]
+      }
+    },
+    props:['menuShow'],
+    methods:{
+      toList(){
+        this.menuShow = false;
+        this.$emit('menuHide',false);
       }
     }
   }
@@ -79,7 +88,6 @@
           font-size: 1.25rem;
           color: #333;
           > i {
-            display: inline-block;
             margin-right: .5rem;
           }
         }
