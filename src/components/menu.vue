@@ -1,10 +1,12 @@
 <template>
   <div class="header-sidenav" :class="{'nav-show':menuShow}">
     <ul class="list">
-      <li class="list-item" >
-        <span class="list-text" ><Icon type="ios-home" size="20"></Icon> 主页</span>
+      <li class="list-item" @click="toIndex">
+        <span class="list-text">
+            <Icon type="ios-home" size="20"></Icon> 主页
+        </span>
       </li>
-      <li class="list-item" v-for="item in menuList">
+      <li class="list-item" v-for="item in menuList" @click="toDetails(item.link)">
         <span class="list-text">
           <Icon :type="item.icon" size="20"></Icon>
           {{item.name}}</span>
@@ -49,7 +51,15 @@
     props:['menuShow'],
     methods:{
       toList(){
-        this.menuShow = false;
+//        this.menuShow = false;
+        this.$emit('menuHide',false);
+      },
+      toDetails(key){
+        this.$router.replace({name:'list',params:{type:key}});
+        this.$emit('menuHide',false);
+      },
+      toIndex(){
+        this.$router.push('/');
         this.$emit('menuHide',false);
       }
     }
@@ -79,14 +89,20 @@
         > span {
           border-bottom: 1px solid #eeeeee;
           box-shadow: 0 5px 5px rgba(0, 0, 0, .05);
-          display: flex;
           width: 100%;
-          justify-content: center;
-          align-items: center;
           height: 4.2rem;
           line-height: 4.2rem;
-          font-size: 1.25rem;
-          color: #333;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          a{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            font-size: 1.25rem;
+            color: #333;
+          }
           > i {
             margin-right: .5rem;
           }
@@ -94,7 +110,7 @@
         &:hover, &:active, &:focus {
           background: #29a7e2;
           box-shadow: 0 0 12px #2ad;
-          > span {
+          > span,a {
             color: white;
           }
         }
