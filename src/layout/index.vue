@@ -60,7 +60,7 @@
         this.api.getImageTextDetail(id).then(
           result=>{
             let data = result.data.data;
-//            console.log(data.content_list);
+            console.log(data.content_list);
             for(let item of data.content_list){
               switch (item.category){
                 case "0":
@@ -80,7 +80,7 @@
                   break;
               }
             }
-//            console.log(this.contentList);
+            console.log(this.contentList);
           }
         );
 

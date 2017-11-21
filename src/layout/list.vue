@@ -3,7 +3,7 @@
     <Spin size="large" fix v-if="spinShow"></Spin>
     <div class="content-list">
       <div class="content" v-for="item in contentList">
-        <div class="content-body">
+        <div class="content-body" v-if="listType!==0">
           <p class="content-tag">- {{item.category}} -</p>
           <div class="content-title">
             <a class="title-link">{{item.title}}</a>
@@ -17,27 +17,27 @@
             <Icon type="clock"></Icon>
             {{item.date}}</p>
         </div>
-        <!--<div class="image-content-body " v-if="listType==0">-->
-          <!--<div class="content-header">-->
-            <!--<p class="date"> {{item.date.slice(0, 4)}} / {{item.date.slice(5, 7)}} / {{item.date.slice(8, 10)}} </p>-->
-            <!--<span>{{item.volume}}</span>-->
-          <!--</div>-->
-          <!--<img class="cover-img" :src="item.picUrl">-->
-          <!--<div class="content-text">-->
-            <!--<span>{{item.pic_info}}</span>-->
-            <!--<p class="text-content-short">{{item.title}}</p>-->
-          <!--</div>-->
-          <!--<p class="content-footer">-->
-            <!--—— {{item.words_info}}-->
-          <!--</p>-->
-        <!--</div>-->
+        <div class="image-content-body " v-else>
+          <div class="content-header">
+            <p class="date"> {{item.date.slice(0, 4)}} / {{item.date.slice(5, 7)}} / {{item.date.slice(8, 10)}} </p>
+            <span>{{item.volume}}</span>
+          </div>
+          <img class="cover-img" :src="item.picUrl">
+          <div class="content-text">
+            <span>{{item.pic_info}}</span>
+            <p class="text-content-short">{{item.title}}</p>
+          </div>
+          <p class="content-footer">
+            —— {{item.words_info}}
+          </p>
+        </div>
       </div>
     </div>
-    <!--<div class="tip" *ngIf="listType==0">- END -</div>-->
+    <div class="tip" v-if="listType===0">- END -</div>
     <div class="footer-bar">
-        <BackTop :height="100" :bottom="50" :right="20">
-          <Icon type="arrow-up-c"></Icon>
-      </BackTop>
+      <span class="btn-backtop" @click="backTop">
+         <Icon type="arrow-up-c" size="20"></Icon>
+      </span>
     </div>
   </div>
 
@@ -45,7 +45,7 @@
 
 <script>
   const defaultSrc = 'https://raw.githubusercontent.com/Anonlyy/ONE_Angular/master/src/assets/image/default.jpg';
-  import {IndexCategory} from '../api/class';
+  import {IndexCategory,IndexImageText} from '../api/class';
   export default {
     name: 'list',
     data() {
@@ -54,10 +54,11 @@
         spinShow:true,
         contentList:[],
         lastId:'-1',
+        ImageTextIdList:[],
+        indexImageText: new IndexImageText('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846', 'xxx', 'xxx', 'xxx'),
         reading:new IndexCategory('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846','null'),
         music:new IndexCategory('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846','null'),
         movie:new IndexCategory('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846','null'),
-        position:10
       }
     },
     created() {
@@ -66,12 +67,18 @@
     watch: {
       '$route': 'fetchData'
     },
+    destroyed(){
+      this.contentList = [];
+    },
     methods:{
       fetchData(){
         this.$Loading.finish();
         this.listType = parseInt(this.$route.params.type);
         this.contentList = [];
         switch (this.listType){
+          case 0:
+            this.getImageTextIdList();
+            break;
           case 1:
             this.getReadingList();
             break;
@@ -82,8 +89,6 @@
             this.getMovieList();
             break;
         }
-
-
       },
       getReadingList(id='0'){
         this.api.getReadings(id).then(
@@ -127,6 +132,38 @@
           }
         );
       },
+      getImageTextIdList() {
+        const _this = this;
+        _this.api.getIdList().then(
+          result=> {
+            _this.ImageTextIdList = [];
+            _this.ImageTextIdList = result.data.data;
+            console.log(_this.ImageTextIdList);
+            if (_this.ImageTextIdList.length > 0) {
+              _this.getImageTextList();
+            }
+          })
+      },
+      getImageTextList(){
+        const _this = this;
+        _this.contentList = [];
+        for (let item of _this.ImageTextIdList) {
+          _this.api.getImageTextDetail(item).then(
+            result=> {
+              let data = result.data.data.content_list[0];
+              _this.indexImageText = new IndexImageText(data.id, data.content_id, data.post_date, data.img_url, data.volume, data.forward, data.words_info, data.title + " | " + data.pic_info);
+              _this.contentList.push(_this.indexImageText);
+            });
+        }
+//        let option = {
+//          expires: _this.getDataService.setCookie(24) //设置缓存有效期,小时为单位
+//        }
+//        setTimeout(()=> {
+//          window.sessionStorage.setItem('ImageTextList', JSON.stringify(_this.contentList));
+//          _this.cookieService.putObject('ImageTextIdList', _this.ImageTextIdList, option);
+//        }, 300);
+        _this.spinShow = false;
+      },
       //回到顶部
       backTop() {
         document.getElementById('app-list').scrollTop = 0;
@@ -141,7 +178,6 @@
           let timer = null;
           clearTimeout(timer);
           timer = setTimeout(function () {
-            _this.spinShow = true;
             switch (_this.listType) {
               case 0:
                 return;
@@ -155,6 +191,7 @@
                 _this.getMovieList(_this.lastId);
                 break;
             }
+            _this.spinShow = true;
             console.log(_this.listType,'到底了');
           }, 300);
         }
@@ -274,6 +311,7 @@
         > .image-content-body {
           text-align: center;
           overflow: hidden;
+          padding-bottom:1rem;
           .content-header {
             margin-top: 1rem;
             .date {
@@ -301,7 +339,7 @@
             .text-content-short {
               text-align: left;
               padding: 1rem 2rem 0 2rem;
-              font-size: .95rem;
+              font-size: 1rem;
               color: #999;
               margin: 0;
             }
@@ -311,6 +349,7 @@
           }
           .content-footer {
             font-size: .8rem;
+            margin-top:.8rem;
             color: rgba(0, 0, 0, .7);
           }
         }
@@ -333,7 +372,8 @@
       right: 1.5rem;
       bottom: 2rem;
       z-index: 1000;
-      >div {
+      >.btn-backtop {
+        display: inline-block;
         background-color: white;
         width: 3.5rem;
         text-align: center;
