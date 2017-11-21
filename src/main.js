@@ -6,6 +6,10 @@ import router from './router'
 import iView from 'iview';
 import api from './api/getData'
 import 'iview/dist/styles/iview.css';
+
+import vuescroll from 'vue-scroll'
+
+Vue.use(vuescroll);
 Vue.config.productionTip = false
 Vue.use(iView);
 Vue.prototype.api = api;

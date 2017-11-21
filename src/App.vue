@@ -16,6 +16,11 @@
 </script>
 
 <style>
+  #app{
+    width: 100%;
+    height: 100%;
+    max-width: 768px;
+  }
   * {
     font-weight: 300;
     box-sizing: border-box;

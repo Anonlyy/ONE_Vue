@@ -1,5 +1,5 @@
 <template>
-  <div class="global-list" id="app-list">
+  <div class="global-list" id="app-list"  @scroll="scrollBottom">
     <Spin size="large" fix v-if="spinShow"></Spin>
     <div class="content-list">
       <div class="content" v-for="item in contentList">
@@ -34,11 +34,11 @@
       </div>
     </div>
     <!--<div class="tip" *ngIf="listType==0">- END -</div>-->
-    <!--<div class="footer-bar">-->
-      <!--<span class="btn-backtop" (click)="backTop()">-->
-        <!--<i class="czs-arrow-up-l"></i>-->
-      <!--</span>-->
-    <!--</div>-->
+    <div class="footer-bar">
+        <BackTop :height="100" :bottom="50" :right="20">
+          <Icon type="arrow-up-c"></Icon>
+      </BackTop>
+    </div>
   </div>
 
 </template>
@@ -57,6 +57,7 @@
         reading:new IndexCategory('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846','null'),
         music:new IndexCategory('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846','null'),
         movie:new IndexCategory('0', '0', '2017-10-26 06:00:00', defaultSrc, 'VOL.1846','null'),
+        position:10
       }
     },
     created() {
@@ -76,9 +77,13 @@
             break;
           case 4:
             this.getMusicList();
+            break;
           case 5:
             this.getMovieList();
+            break;
         }
+
+
       },
       getReadingList(id='0'){
         this.api.getReadings(id).then(
@@ -121,6 +126,38 @@
             this.lastId = this.contentList[this.contentList.length - 1].id;
           }
         );
+      },
+      //回到顶部
+      backTop() {
+        document.getElementById('app-list').scrollTop = 0;
+      },
+      //触底事件
+      scrollBottom(e) {
+        const _this =this;
+        //scrollHeight - offsetHeight = 滚动条总高度
+        let scrollHeight = e.target.scrollHeight - e.target.offsetHeight;
+        //定时器节流
+        if (e.target.scrollTop >= scrollHeight) {
+          let timer = null;
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            _this.spinShow = true;
+            switch (_this.listType) {
+              case 0:
+                return;
+              case 1:
+                _this.getReadingList(_this.lastId);
+                break;
+              case 4:
+                _this.getMusicList(_this.lastId);
+                break;
+              case 5:
+                _this.getMovieList(_this.lastId);
+                break;
+            }
+            console.log(_this.listType,'到底了');
+          }, 300);
+        }
       }
     }
 
@@ -131,7 +168,7 @@
   .global-list {
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
     padding-top: 3.4rem;
     background-color: #F6F6F6;
     .content-list {
@@ -209,7 +246,7 @@
               position: absolute;
               left: -1.5rem;
               top: 0;
-              width: 20em;
+              width: 20.5rem;
               height: 15.125em;
               border-radius: 0 9.9em 10em 0;
               z-index: -1;
@@ -296,9 +333,8 @@
       right: 1.5rem;
       bottom: 2rem;
       z-index: 1000;
-      .btn-backtop {
+      >div {
         background-color: white;
-        display: inline-block;
         width: 3.5rem;
         text-align: center;
         line-height: 3.5rem;
@@ -307,6 +343,10 @@
         height: 3.5rem;
         border-radius: 50%;
         box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
+        >i{
+          color: #318BF0;
+          vertical-align: middle;
+        }
       }
     }
   }
