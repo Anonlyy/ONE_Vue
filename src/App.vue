@@ -6,11 +6,12 @@
 </template>
 
 <script>
+  import {backTop} from './components/backTop'
   import header from './components/header'
   export default {
     name: 'app',
     components: {
-      "app-header": header
+      "app-header": header,
     }
   }
 </script>

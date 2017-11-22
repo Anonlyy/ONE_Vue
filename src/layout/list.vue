@@ -10,7 +10,7 @@
             <p class="text-author">著/ {{item.authorName}}</p>
           </div>
           <div :class="listType==4?'text-music-cover':''">
-            <img class="cover-img" :src="item.picUrl">
+            <img class="cover-img" :src="item.picUrl" @click="toLink(item.content_id)">
           </div>
           <p class="text-content-short">{{item.content}}</p>
           <p class="date">
@@ -34,11 +34,7 @@
       </div>
     </div>
     <div class="tip" v-if="listType===0">- END -</div>
-    <div class="footer-bar">
-      <span class="btn-backtop" @click="backTop">
-         <Icon type="arrow-up-c" size="20"></Icon>
-      </span>
-    </div>
+    <backTopBar></backTopBar>
   </div>
 
 </template>
@@ -164,10 +160,6 @@
 //        }, 300);
         _this.spinShow = false;
       },
-      //回到顶部
-      backTop() {
-        document.getElementById('app-list').scrollTop = 0;
-      },
       //触底事件
       scrollBottom(e) {
         const _this =this;
@@ -195,6 +187,24 @@
             console.log(_this.listType,'到底了');
           }, 300);
         }
+      },
+      //跳转
+      toLink(id){
+        switch (this.listType){
+          case 0:
+            this.$router.push({name:'reading',params:{id:id}})
+            break;
+          case 1:
+            this.$router.push({name:'reading',params:{id:id}})
+            break;
+          case 4:
+            this.$router.push({name:'music',params:{id:id}})
+            break;
+          case 5:
+            this.$router.push({name:'movie',params:{id:id}})
+            break;
+        }
+
       }
     }
 
@@ -367,27 +377,6 @@
       color: #888;
       background: linear-gradient(rgba(243, 243, 243, .1), rgba(243, 243, 243, 1));
     }
-    .footer-bar {
-      position: fixed;
-      right: 1.5rem;
-      bottom: 2rem;
-      z-index: 1000;
-      >.btn-backtop {
-        display: inline-block;
-        background-color: white;
-        width: 3.5rem;
-        text-align: center;
-        line-height: 3.5rem;
-        font-weight: bold;
-        font-size: 1.3rem;
-        height: 3.5rem;
-        border-radius: 50%;
-        box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
-        >i{
-          color: #318BF0;
-          vertical-align: middle;
-        }
-      }
-    }
+
   }
 </style>

@@ -6,10 +6,8 @@ import router from './router'
 import iView from 'iview';
 import api from './api/getData'
 import 'iview/dist/styles/iview.css';
+import backTopBar from '@/components/backTop';
 
-import vuescroll from 'vue-scroll'
-
-Vue.use(vuescroll);
 Vue.config.productionTip = false
 Vue.use(iView);
 Vue.prototype.api = api;
@@ -22,9 +20,13 @@ router.beforeEach((to, from, next) => {
 router.afterEach(route => {
   iView.LoadingBar.finish();
 });
+
+
+Vue.component('backTopBar', backTopBar);
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App }
 })
+

@@ -56,7 +56,7 @@ export default ({
    * @returns {Observable<R|T>}
    */
   getMusicDetails(id){
-    return axios.get(`http://v3.wufazhuce.com:8000/api/essay/${id}`);
+    return axios.get(`http://v3.wufazhuce.com:8000/api/music/detail/${id}`)
   },
 
   /**
