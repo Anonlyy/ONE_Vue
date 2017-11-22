@@ -12,7 +12,9 @@
           {{item.name}}</span>
       </li>
       <li class="list-item">
-        <span class="list-text">关于我</span>
+        <span class="list-text">
+          <a href="http://www.xposean.xin/about" target="_blank">关于我</a>
+        </span>
       </li>
     </ul>
     <div class="button-overlay" @click="toList"></div>
