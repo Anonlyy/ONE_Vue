@@ -22,6 +22,8 @@
     height: 100%;
     max-width: 768px;
     background-color: rgba(0,0,0,0);
+    position: absolute;
+    z-index: 100;
   }
   * {
     font-weight: 300;
