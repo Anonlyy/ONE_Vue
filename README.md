@@ -13,6 +13,11 @@
 ## 概述 ##
 本项目是[基于韩寒「ONE · 一个」4.0版本API](https://github.com/gongph/one-api)制作.
 
+>技术栈:**vue**+**vue-cli**+**iView**+**vue-router**+**vueg**
+
+本项目还有[Angular4版本](https://github.com/Anonlyy/ONE_Angular)
+
+
 ## 功能开发 ##
 - [ ] **功能开发现状**
     - [x] **主页**(已完成),默认显示当天的图文内容、最新的音乐、阅读、影视内容.
@@ -27,12 +32,12 @@
 
 ### 1.克隆项目 ###
 
-	git clone https://github.com/Anonlyy/ONE_Angular.git
+	git clone https://github.com/Anonlyy/ONE_Vue.git
 	npm install(推荐cnpm)
 
 ###	2.启动项目:running: ###
 	
-	npm start
+	npm dev
 
 
 ### 预览GIF
