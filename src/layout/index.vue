@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app-container">
     <Spin size="large" fix v-if="spinShow"></Spin>
-    <div class="app-banner" :style="{height:bannerHeight+'px'}" >
+    <div class="app-banner" :style="{height:bannerHeight+'px'}" @click="toDetails(currentId,3)">
       <img class="banner" :src="indexImageText.picUrl" alt="">
       <div class="banner-inner">
         <h3 class="inner-day">{{indexImageText.date | dayPipe}}</h3>
@@ -14,15 +14,15 @@
     </div>
     <div class="app-body">
       <ul class="content-list">
-        <li class="content-item" v-for="item in contentList">
+        <li class="content-item" v-for="item,index in contentList">
           <div class="item-heading">
-            <a href="#" v-text="'「 '+item.category+' 」'">  </a>
+            <router-link :to="{ name:'list',params:{ type:link[index] } }">「 {{item.category}} 」</router-link>
           </div>
           <div class="item-body">
-            <h3 class="title"  v-text="item.title"></h3>
+            <h3 class="title"  v-text="item.title" @click="toDetails(item.content_id,index)"></h3>
             <p class="artist" v-text="'作者／'+item.authorName"></p>
             <div class="text-content" v-text="item.content"></div>
-            <a href="#" class="more-link">阅读全文 ></a>
+            <a href="#" class="more-link" @click.prevent="toDetails(item.content_id,index)">阅读全文 ></a>
           </div>
         </li>
       </ul>
@@ -43,6 +43,7 @@
         currentId:-1,
         spinShow:true,
         contentList:[],
+        link:[1,4,5],
         indexImageText:new IndexImageText('null','null','null','null','null','null'),
         reading:new IndexCategory('null','null','null','null','null','null'),
         music:new IndexCategory('null','null','null','null','null','null'),
@@ -52,7 +53,8 @@
     created() {
       this.api.getIdList().then(
         res => {
-          return res.data.data[0];
+          this.currentId = res.data.data[0]
+          return this.currentId;
         }
       ).then((id)=>{
         this.id = id;
@@ -89,17 +91,23 @@
     mounted(){
       this.bannerHeight = window.screen.height;
     },
-    filters:{
-      datePipe(value){
-        let mon = ['Jan.','Feb.','Mar.','Apr.','May.','Jun.','Jul.','Aug.','Sept.','Oct.','Nov.','Dec.']
-        return value.slice(0,4)+' '+mon[parseInt(value.slice(5,7))-1];
-      },
-      dayPipe(value){
-        return value.toString().slice(8,10);
-      }
-    },
     methods: {
-
+      toDetails(id, category) {
+        switch (category) {
+          case 0:
+            this.$router.push({name: 'reading', params: {id: id}});
+            break;
+          case 1:
+            this.$router.push({name: 'music', params: {id: id}});
+            break;
+          case 2:
+            this.$router.push({name: 'movie', params: {id: id}});
+            break;
+          case 3:
+            this.$router.push({name: 'imageText', params: {id: id}});
+            break;
+        }
+      },
     }
   }
 </script>

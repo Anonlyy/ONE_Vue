@@ -22,6 +22,14 @@ router.afterEach(route => {
 });
 
 
+
+Vue.filter('datePipe', function (value) {
+    let mon = ['Jan.','Feb.','Mar.','Apr.','May.','Jun.','Jul.','Aug.','Sept.','Oct.','Nov.','Dec.']
+    return value.slice(0,4)+' '+mon[parseInt(value.slice(5,7))-1];
+})
+Vue.filter('dayPipe', function (value) {
+    return value.toString().slice(8,10);
+})
 Vue.component('backTopBar', backTopBar);
 new Vue({
   el: '#app',

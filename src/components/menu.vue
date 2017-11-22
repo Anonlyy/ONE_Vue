@@ -59,7 +59,7 @@
         this.$emit('menuHide',false);
       },
       toIndex(){
-        this.$router.push('/');
+        this.$router.push('/index');
         this.$emit('menuHide',false);
       }
     }

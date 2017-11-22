@@ -1,3 +1,4 @@
+//图文详情对象
 export class IndexImageText {
   constructor(id, content_id, date, picUrl, volume, title, words_info, pic_info) {
     this.id = id,
@@ -41,4 +42,15 @@ export class ReadDetail {
   }
 }
 
+//影视详情对象
+export class MovieDetail {
+  constructor(id, authorName, title,content,author_introduce,copyright) {
+    this.id = id,
+      this.authorName = authorName,
+      this.title = title,
+      this.content = content,
+      this.author_introduce = author_introduce, //编辑作者
+      this.copyright = copyright   //转载声明
+  }
+}
 

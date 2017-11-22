@@ -2,17 +2,17 @@
   <div class="global-list" id="app-list"  @scroll="scrollBottom">
     <Spin size="large" fix v-if="spinShow"></Spin>
     <div class="content-list">
-      <div class="content" v-for="item in contentList">
+      <div class="content" v-for="item,index in contentList">
         <div class="content-body" v-if="listType!==0">
           <p class="content-tag">- {{item.category}} -</p>
           <div class="content-title">
-            <a class="title-link">{{item.title}}</a>
+            <a class="title-link"  @click="toLink(item.content_id)">{{item.title}}</a>
             <p class="text-author">著/ {{item.authorName}}</p>
           </div>
           <div :class="listType==4?'text-music-cover':''">
             <img class="cover-img" :src="item.picUrl" @click="toLink(item.content_id)">
           </div>
-          <p class="text-content-short">{{item.content}}</p>
+          <p class="text-content-short"  @click="toLink(item.content_id)">{{item.content}}</p>
           <p class="date">
             <Icon type="clock"></Icon>
             {{item.date}}</p>
@@ -22,10 +22,10 @@
             <p class="date"> {{item.date.slice(0, 4)}} / {{item.date.slice(5, 7)}} / {{item.date.slice(8, 10)}} </p>
             <span>{{item.volume}}</span>
           </div>
-          <img class="cover-img" :src="item.picUrl">
+          <img class="cover-img" :src="item.picUrl"  @click="toLink(ImageTextIdList[index])">
           <div class="content-text">
             <span>{{item.pic_info}}</span>
-            <p class="text-content-short">{{item.title}}</p>
+            <p class="text-content-short"  @click="toLink(item.content_id)">{{item.title}}</p>
           </div>
           <p class="content-footer">
             —— {{item.words_info}}
@@ -192,7 +192,7 @@
       toLink(id){
         switch (this.listType){
           case 0:
-            this.$router.push({name:'reading',params:{id:id}})
+            this.$router.push({name:'imageText',params:{id:id}})
             break;
           case 1:
             this.$router.push({name:'reading',params:{id:id}})
