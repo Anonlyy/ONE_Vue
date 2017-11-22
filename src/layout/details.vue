@@ -1,5 +1,8 @@
 <template>
+  <div id="details-app">
     <router-view></router-view>
+  </div>
+
 </template>
 
 <script>
@@ -12,8 +15,14 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+  #details-app{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+  }
   .music-content,.movie-content{
-    padding-top: 4rem;
+    padding-top: 3.4rem;
+    background-color: white;
     .content-banner{
       position: relative;
       .banner-detail{

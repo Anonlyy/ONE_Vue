@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <transition name="slide-left">
-      <router-view class="child-view"></router-view>
-    </transition>
-
+      <router-view></router-view>
   </div>
 </template>
 
@@ -24,6 +21,7 @@
     width: 100%;
     height: 100%;
     max-width: 768px;
+    background-color: rgba(0,0,0,0);
   }
   * {
     font-weight: 300;
@@ -31,7 +29,6 @@
     font-size: 14px;
 
   }
-
   html, body {
     width: 100%;
     height: 100%;
@@ -40,22 +37,6 @@
     max-width: 768px;
     font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif !important;
   }
-  .child-view {
-    position: absolute;
-    width:100%;
-    transition: all .8s cubic-bezier(.55,0,.1,1);
-  }
-  .slide-left-enter, .slide-right-leave-active {
-    opacity: 0;
-    -webkit-transform: translateX(-1000px);
-    transform: translateX(-1000px);
-  }
-  .slide-left-leave-active, .slide-right-enter {
-    opacity: 0;
-    -webkit-transform: translateX(1000px);
-    transform: translateX(1000px);
-  }
-  路
   @media only screen {
     html {
       font-size: 30px;

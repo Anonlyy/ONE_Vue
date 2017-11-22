@@ -65,6 +65,7 @@
     },
     destroyed(){
       this.contentList = [];
+      this.spinShow = true;
     },
     methods:{
       fetchData(){
