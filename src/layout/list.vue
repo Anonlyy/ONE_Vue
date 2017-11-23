@@ -69,7 +69,7 @@
     },
     methods:{
       fetchData(){
-        this.$Loading.finish();
+//        this.$Loading.finish();
         this.listType = parseInt(this.$route.params.type);
         this.contentList = [];
         switch (this.listType){
@@ -287,7 +287,7 @@
             text-align: center;
             height: 15.125em;
             line-height: 15.125em;
-            z-index: 10;
+            z-index: 1;
 
             &::before {
               content: '';

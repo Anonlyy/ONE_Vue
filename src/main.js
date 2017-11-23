@@ -11,7 +11,6 @@ import vueg from 'vueg'
 import 'vueg/css/transition-min.css';
 
 
-
 const options={
   duration: '0.6',              //转场动画时长，默认为0.3，单位秒
   firstEntryDisable: false,     //值为true时禁用首次进入应用时的渐现动画，默认为false

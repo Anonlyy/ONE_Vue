@@ -13,7 +13,7 @@
 ## 概述 ##
 本项目是[基于韩寒「ONE · 一个」4.0版本API](https://github.com/gongph/one-api)制作.
 
->技术栈:**vue**+**vue-cli**+**iView**+**vue-router**+**vueg**
+>技术栈:**vue**+**vue-cli**+**axios**+**iView**+**vue-router**+**vueg**
 
 本项目还有[Angular4版本](https://github.com/Anonlyy/ONE_Angular)
 
