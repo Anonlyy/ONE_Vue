@@ -5,9 +5,8 @@
 
 
 > 预览地址:
-[http://www.xposean.xin/ONE](http://www.xposean.xin/ONE "http://www.xposean.xin/ONE")
-或
-[http://Xposean.coding.me/ONE_Angular](http://Xposean.coding.me/ONE_Angular "http://Xposean.coding.me/ONE_Angular")
+[http://www.xposean.xin/ONE_vue](http://www.xposean.xin/ONE_vue "http://www.xposean.xin/ONE_vue")
+
 
 
 ## 概述 ##
