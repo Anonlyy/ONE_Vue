@@ -75,6 +75,17 @@ export default ({
    */
   getMovieDetailsByPhoto(id){
     return axios.get(`http://v3.wufazhuce.com:8000/api/movie/detail/${id}`);
+  },
+
+
+  /**
+   * 获取评论详情
+   * @param type
+   * @param id
+   * @returns {*}
+   */
+  getCommentDetails(type,id){
+    return axios.get(`http://v3.wufazhuce.com:8000/api/comment/praiseandtime/${type}/${id}/0`);
   }
 })
 

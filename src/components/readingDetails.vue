@@ -12,7 +12,8 @@
       </div>
 
       <div class="content-author">
-        <h4 class="author-title">作者</h4>
+        <h4 class="author-title">
+          <Icon type="android-person"></Icon>作者</h4>
         <div class="author-content">
           <img :src="storyDetail.authorImgurl" alt="">
           <div class="author">
@@ -22,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="content-comment"></div>
+    <comment :comment-type="commentType"></comment>
     <BackTop :height="100" :bottom="30" :right="20">
       <Icon type="arrow-up-c" class="btn-backtop" size="20"></Icon>
     </BackTop>
@@ -35,16 +36,25 @@
 
 <script>
   const defaultSrc = 'https://raw.githubusercontent.com/Anonlyy/ONE_Angular/master/src/assets/image/default.jpg';
-  import {ReadDetail} from '../api/class'
+  import {ReadDetail} from '../api/class';
+  import comment from './comment.vue';
     export default {
         name: 'reading-details',
         data() {
             return {
               storyDetail : new ReadDetail('0','xxxx','xxx',defaultSrc,'xxx','xxx','xxx','xxx','xxx'),
+              commentType:{
+                type:'essay',
+                id:0
+              },
             }
+        },
+        components:{
+          comment
         },
         created(){
           this.getReadingDetails(this.$route.params.id);
+          this.commentType.id = this.$route.params.id;
         },
         methods:{
           getReadingDetails(id){

@@ -14,12 +14,12 @@
     </div>
     <div class="app-body">
       <ul class="content-list">
-        <li class="content-item" v-for="item,index in contentList">
+        <li class="content-item" v-for="item in contentList">
           <div class="item-heading">
-            <router-link :to="{ name:'list',params:{ type:link[index] } }">「 {{item.category}} 」</router-link>
+            <router-link :to="{ name:'list',params:{ type: item.category } }">「 {{item.category|category}} 」</router-link>
           </div>
           <div class="item-body">
-            <h3 class="title"  v-text="item.title" @click="toDetails(item.content_id,index)"></h3>
+            <h3 class="title"  v-text="item.title" @click="toDetails(item.content_id,item.category)"></h3>
             <p class="artist" v-text="'作者／'+item.authorName"></p>
             <div class="text-content" v-text="item.content"></div>
             <a href="#" class="more-link" @click.prevent="toDetails(item.content_id,index)">阅读全文 ></a>
@@ -43,7 +43,7 @@
         currentId:-1,
         spinShow:true,
         contentList:[],
-        link:[1,4,5],
+        link:[1,1,4,5],
         indexImageText:new IndexImageText('null','null','null','null','null','null'),
         reading:new IndexCategory('null','null','null','null','null','null'),
         music:new IndexCategory('null','null','null','null','null','null'),
@@ -69,15 +69,15 @@
                   this.indexImageText = new IndexImageText(item.id,item.content_id,data.date,item.img_url,item.volume,item.forward,item.pic_info,item.words_info);
                   break;
                 case "1":
-                  this.reading = new IndexCategory(item.id,item.content_id,'阅读',item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
+                  this.reading = new IndexCategory(item.id,item.content_id,1,item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
                   this.contentList.push(this.reading);
                   break;
                 case "4":
-                  this.music = new IndexCategory(item.id,item.content_id,'音乐',item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
+                  this.music = new IndexCategory(item.id,item.content_id,4,item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
                   this.contentList.push(this.music);
                   break;
                 case "5":
-                  this.movie = new IndexCategory(item.id,item.content_id,'影视',item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
+                  this.movie = new IndexCategory(item.id,item.content_id,5,item.img_url,item.author.user_name,item.title,item.forward,item.post_date);
                   this.contentList.push(this.movie);
                   break;
               }
@@ -88,22 +88,37 @@
 
       })
     },
+    filters:{
+      category:function (value) {
+        switch (value){
+          case 1:
+            return "阅读";
+            break;
+          case 4:
+            return "音乐";
+            break;
+          case 5:
+            return "影视";
+            break;
+        }
+      }
+    },
     mounted(){
       this.bannerHeight = window.screen.height;
     },
     methods: {
       toDetails(id, category) {
         switch (category) {
-          case 0:
+          case 1:
             this.$router.push({name: 'reading', params: {id: id}});
             break;
-          case 1:
+          case 4:
             this.$router.push({name: 'music', params: {id: id}});
             break;
-          case 2:
+          case 5:
             this.$router.push({name: 'movie', params: {id: id}});
             break;
-          case 3:
+          case 0:
             this.$router.push({name: 'imageText', params: {id: id}});
             break;
         }

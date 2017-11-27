@@ -8,7 +8,7 @@
     <p class="month">{{indexImageText.date | datePipe}}</p>
     <div class="separate-line"></div>
 
-    <p class="text-content">{{indexImageText.title}}</p>
+    <p class="text-content" v-text="indexImageText.title"></p>
   </div>
 </template>
 

@@ -22,7 +22,7 @@
             <p class="date"> {{item.date.slice(0, 4)}} / {{item.date.slice(5, 7)}} / {{item.date.slice(8, 10)}} </p>
             <span>{{item.volume}}</span>
           </div>
-          <img class="cover-img" :src="item.picUrl"  @click="toLink(ImageTextIdList[index])">
+          <img class="cover-img" :src="item.picUrl"  @click="toLink(item.content_id)">
           <div class="content-text">
             <span>{{item.pic_info}}</span>
             <p class="text-content-short"  @click="toLink(item.content_id)">{{item.title}}</p>
@@ -148,7 +148,7 @@
           _this.api.getImageTextDetail(item).then(
             result=> {
               let data = result.data.data.content_list[0];
-              _this.indexImageText = new IndexImageText(data.id, data.content_id, data.post_date, data.img_url, data.volume, data.forward, data.words_info, data.title + " | " + data.pic_info);
+              _this.indexImageText = new IndexImageText(data.id, item, data.post_date, data.img_url, data.volume, data.forward, data.words_info, data.title + " | " + data.pic_info);
               _this.contentList.push(_this.indexImageText);
             });
         }

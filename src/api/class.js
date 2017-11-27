@@ -1,6 +1,6 @@
 //图文详情对象
 export class IndexImageText {
-  constructor(id, content_id, date, picUrl, volume, title, words_info, pic_info) {
+  constructor(id, content_id, date, picUrl, volume, title, words_info, pic_info,category) {
     this.id = id,
       this.content_id = content_id,//详情页传值id
       this.date = date,//时间
@@ -8,7 +8,8 @@ export class IndexImageText {
       this.volume = volume,//标号
       this.title = title,//标题
       this.words_info = words_info,//出处
-      this.pic_info = pic_info//图片出处
+      this.pic_info = pic_info,//图片出处'
+      this.category = category
   }
 }
 
@@ -51,6 +52,18 @@ export class MovieDetail {
       this.content = content,
       this.author_introduce = author_introduce, //编辑作者
       this.copyright = copyright   //转载声明
+  }
+}
+
+
+//评论对象
+export class Comment{
+  constructor(id,content,comment_time,user_name,avatar){
+    this.id = id,
+    this.content = content, //评论内容
+    this.comment_time = comment_time, //评论时间
+    this.user_name = user_name,
+    this.avatar = avatar  //头像
   }
 }
 

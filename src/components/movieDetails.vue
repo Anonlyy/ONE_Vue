@@ -5,7 +5,6 @@
     </div>
     <div class="content-body">
       <h3 class="content-title" v-text="movieDetail.title">
-
       </h3>
       <p class="text-subtitle">
         ——{{photoList.subTitle}}
@@ -20,7 +19,7 @@
         <i class="text-editor" v-text="movieDetail.copyright"></i>
       </div>
     </div>
-    <div class="content-comment"></div>
+    <comment :comment-type="commentType"></comment>
     <BackTop :height="100" :bottom="30" :right="20">
       <Icon type="arrow-up-c" class="btn-backtop" size="20"></Icon>
     </BackTop>
@@ -33,7 +32,8 @@
 
 <script>
   const defaultSrc = 'https://raw.githubusercontent.com/Anonlyy/ONE_Angular/master/src/assets/image/default.jpg';
-  import { MovieDetail } from '../api/class'
+  import { MovieDetail } from '../api/class';
+  import  comment  from './comment';
     export default {
         name: 'movie-details',
         data() {
@@ -42,12 +42,20 @@
               photoList : {
                 subTitle:'',
                 bannerUrl:defaultSrc,
-              }
+              },
+              commentType:{
+                type:'movie',
+                id:0
+              },
             }
+        },
+        components:{
+          comment
         },
         created(){
           this.getMovieDetails(this.$route.params.id);
           this.getPhotoList(this.$route.params.id);
+          this.commentType.id = this.$route.params.id;
         },
         methods:{
           getMovieDetails(id){
